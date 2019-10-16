@@ -20,10 +20,26 @@ func Parse(r io.Reader) ([]Link, error) {
 		return nil, err
 	}
 	nodes := linkNodes(doc)
+	var links []Link
 	for _, node := range nodes {
+		links = append(links, buildLink(node))
 		fmt.Println(node)
 	}
-	return nil, nil
+	return links, nil
+
+}
+
+func buildLink(n *html.Node) Link {
+	var ret Link
+	for _, attr := range n.Attr {
+		if attr.Key == "href" {
+			ret.Href = attr.Val
+			break
+		}
+
+	}
+	ret.Text = "TODO: Parse the text"
+	return ret
 
 }
 
